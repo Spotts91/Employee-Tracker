@@ -30,6 +30,11 @@ When the user runs the application in Terminal:
 - Selecting "add department" will present the user with prompts to add a department to the database.
 - Selecting "update employee" will present the user with a list of employees which they will chose from to update.
 
+## Walkthrough Video
+
+<img src="assets\images\terminal-example.png" alt="Terminal Example">
+<img src="assets\images\terminal-example-2.png" alt="Terminal Example">
+
 Since this application is run through the terminal, there is no website to view. To see how this application works, please follow the link below to view a walkthrough video.
 
 ## License
