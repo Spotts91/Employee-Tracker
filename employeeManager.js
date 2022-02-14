@@ -4,7 +4,7 @@ const inquirer = require('inquirer');
 const consoleTable = require('console.table');
 const util = require('util');
 
-// Create the connection to MySQL Workbench.
+// Create the connection to MySQL WorkBench
 let connection = mysql.createConnection({
     host: 'localhost',
     port: 3306,
@@ -15,22 +15,22 @@ let connection = mysql.createConnection({
 
 connection.query = util.promisify(connection.query);
 
-// Begin the application fter establishing the connection.
+// Begin the application after establishing the connection.
 connection.connect(function (err) {
     if (err) throw err;
     initialAction();
 })
 
-// Give the user a nice welcome message.
+// Give the user a pleasant welcome message.
 console.table(
     "\n------------ EMPLOYEE TRACKER ------------\n"
 )
 
-//  Ask the user initial action question to figure out what they would like to do.
+// Ask the user initial action question to figure out what they would like to do.
 const initialAction = async () => {
     try {
         let answer = await inquirer.prompt({
-            name:'action',
+            name: 'action',
             type: 'list',
             message: 'What would you like to do?',
             choices: [
@@ -49,33 +49,33 @@ const initialAction = async () => {
                 employeeView();
                 break;
 
-                case 'View Departments':
+            case 'View Departments':
                 departmentView();
                 break;
 
-                case 'View Roles':
-                    roleView();
-                    break;
-                
-                case 'Add Employees':
-                    employeeAdd();
-                    break;
+            case 'View Roles':
+                roleView();
+                break;
 
-                case 'Add Departments':
-                    departmentAdd();
-                    break;
-                
-                case 'Add Roles':
-                    roleAdd();
-                    break;
-                    
-                case 'Update Employee Role':
-                    employeeUpdate();
-                    break;
-                    
-                case 'Exit':
-                    connection.end();
-                    break;
+            case 'Add Employees':
+                employeeAdd();
+                break
+
+            case 'Add Departments':
+                departmentAdd();
+                break
+
+            case 'Add Roles':
+                roleAdd();
+                break
+
+            case 'Update Employee Role':
+                employeeUpdate();
+                break
+
+            case 'Exit':
+                connection.end();
+                break;
         };
     } catch (err) {
         console.log(err);
@@ -99,7 +99,7 @@ const employeeView = async () => {
         console.log(err);
         initialAction();
     };
-}  
+}
 
 // Selection to view all of the departments.
 const departmentView = async () => {
@@ -107,7 +107,7 @@ const departmentView = async () => {
     try {
         let query = 'SELECT * FROM department';
         connection.query(query, function (err, res) {
-            if(err) throw err;
+            if (err) throw err;
             let departmentArray = [];
             res.forEach(department => departmentArray.push(department));
             console.table(departmentArray);
@@ -119,12 +119,12 @@ const departmentView = async () => {
     };
 }
 
-// Selection to view all of the roles
+// Selection to view all of the roles.
 const roleView = async () => {
     console.log('Role View');
     try {
         let query = 'SELECT * FROM role';
-        connection.query(query, function (err,res) {
+        connection.query(query, function (err, res) {
             if (err) throw err;
             let roleArray = [];
             res.forEach(role => roleArray.push(role));
@@ -150,7 +150,12 @@ const employeeAdd = async () => {
             {
                 name: 'firstName',
                 type: 'input',
-                message: 'What is the first name of this employee?'
+                message: 'What is the first name of this Employee?'
+            },
+            {
+                name: 'lastName',
+                type: 'input',
+                message: 'What is the last name of this Employee?'
             },
             {
                 name: 'employeeRoleId',
@@ -162,6 +167,17 @@ const employeeAdd = async () => {
                     }
                 }),
                 message: "What is this Employee's role id?"
+            },
+            {
+                name: 'employeeManagerId',
+                type: 'list',
+                choices: managers.map((manager) => {
+                    return {
+                        name: manager.first_name + " " + manager.last_name,
+                        value: manager.id
+                    }
+                }),
+                message: "What is this Employee's Manager's Id?"
             }
         ])
 
@@ -172,7 +188,7 @@ const employeeAdd = async () => {
             manager_id: (answer.employeeManagerId)
         });
 
-        console.log(`${answer.firstName} ${answer.lastName} added successfully. \n`);
+        console.log(`${answer.firstName} ${answer.lastName} added successfully.\n`);
         initialAction();
 
     } catch (err) {
@@ -188,7 +204,7 @@ const departmentAdd = async () => {
 
         let answer = await inquirer.prompt([
             {
-                name:'deptName',
+                name: 'deptName',
                 type: 'input',
                 message: 'What is the name of your new department?'
             }
@@ -237,7 +253,7 @@ const roleAdd = async () => {
                 message: 'What department ID is this role associated with?',
             }
         ]);
-
+        
         let chosenDepartment;
         for (i = 0; i < departments.length; i++) {
             if(departments[i].department_id === answer.choice) {
@@ -249,7 +265,7 @@ const roleAdd = async () => {
             salary: answer.salary,
             department_id: answer.departmentId
         })
-        
+
         console.log(`${answer.title} role added successfully.\n`)
         initialAction();
 
@@ -259,7 +275,7 @@ const roleAdd = async () => {
     };
 }
 
-// Selection to update a role for a specific employee.
+// Selection to update a roll for a specific employee.
 const employeeUpdate = async () => {
     try {
         console.log('Employee Update');
@@ -272,7 +288,7 @@ const employeeUpdate = async () => {
                 type: 'list',
                 choices: employees.map((employeeName) => {
                     return {
-                        name: employeeName.first_name + employeeName.last_name,
+                        name: employeeName.first_name + " " + employeeName.last_name,
                         value: employeeName.id
                     }
                 }),
@@ -296,7 +312,7 @@ const employeeUpdate = async () => {
             }
         ]);
 
-        let result = await connection.query("UPDATE employee SET ? WHERE ?", [{ role_id: roleSelection.role}, { id: employeeSelection.employee}]);
+        let result = await connection.query("UPDATE employee SET ? WHERE ?", [{ role_id: roleSelection.role }, { id: employeeSelection.employee }]);
 
         console.log(`The role was successfully updated.\n`);
         initialAction();
