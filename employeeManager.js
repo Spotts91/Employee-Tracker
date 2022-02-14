@@ -10,7 +10,7 @@ let connection = mysql.createConnection({
     port:3306,
     user: 'root',
     password: 'password',
-    database: 'employee_DB'
+    database: 'employeeSchema.sql'
 });
 
 connection.query = util.promisify(connection.query);
