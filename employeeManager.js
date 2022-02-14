@@ -7,10 +7,10 @@ const util = require('util');
 // Create the connection to MySQL Workbench.
 let connection = mysql.createConnection({
     host: 'localhost',
-    port:3306,
+    port: 3306,
     user: 'root',
     password: 'password',
-    database: 'employeeSchema.sql'
+    database: 'employee_DB'
 });
 
 connection.query = util.promisify(connection.query);
@@ -272,7 +272,7 @@ const employeeUpdate = async () => {
                 type: 'list',
                 choices: employees.map((employeeName) => {
                     return {
-                        name: employeeName.first_name + " " + employeeName.last_name,
+                        name: employeeName.first_name + employeeName.last_name,
                         value: employeeName.id
                     }
                 }),
