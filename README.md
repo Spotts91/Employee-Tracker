@@ -37,7 +37,7 @@ When the user runs the application in Terminal:
 
 Since this application is run through the terminal, there is no website to view. To see how this application works, please follow the link below to view a walkthrough video.
 
-<img src="https://watch.screencastify.com/v/jro0OkBCkkmPZp034I3J" alt="Walkthrough Video">
+<a href="https://watch.screencastify.com/v/jro0OkBCkkmPZp034I3J" alt="Walkthrough Video">
 ## License
 
 This application is using MIT.
